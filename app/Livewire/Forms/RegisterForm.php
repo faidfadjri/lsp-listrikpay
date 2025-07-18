@@ -51,10 +51,9 @@ class RegisterForm extends Component
                 return;
             }
 
-            Log::debug($getCustomerRole->user_role_id);
-
             $user = User::create([
                 'name'      => $validated['name'],
+                'username'   => $validated['username'],
                 'email'     => $validated['email'],
                 'password'  => Hash::make($validated['password']),
                 'user_role' => $getCustomerRole->user_role_id,

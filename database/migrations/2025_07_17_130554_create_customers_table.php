@@ -10,14 +10,12 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id('customer_id');
-            $table->string('username')->unique();
-            $table->string('password');
-
             $table->string('name');
             $table->string('phone_number')->nullable();
             $table->string('address');
             
-            $table->foreignId('tarif_id')->constrained('tarifs')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
+            $table->foreignId('tarif_id')->constrained('tarifs', 'tarif_id')->onDelete('cascade');
             $table->string('meter_number')->comment('Nomor Meteran');
 
             $table->timestamps();

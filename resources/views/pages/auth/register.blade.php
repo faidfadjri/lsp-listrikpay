@@ -28,7 +28,7 @@
             </ul>
         </div>
 
-        <div class="flex-1 p-10 flex flex-col overflow-y-auto items-center justify-center bg-white">
+        <div class="flex-1 p-10 flex flex-col overflow-y-auto items-center bg-white">
             @livewire('forms.register-form')
         </div>
 

@@ -2,20 +2,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User\UserRole;
+use Illuminate\Support\Facades\DB;
 
 class UserRoleSeeder extends Seeder
 {
     public function run(): void
     {
-        UserRole::create([
-            'name' => 'Admin',
+        DB::table('user_roles')->insert([
+            ['name' => 'Admin'],
+            ['name' => 'Petugas'],
         ]);
-
-        UserRole::create([
-            'name' => 'Petugas',
-        ]);   
     }
 }

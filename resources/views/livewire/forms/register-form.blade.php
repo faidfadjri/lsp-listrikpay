@@ -1,10 +1,8 @@
-<div class="w-full bg-white p-8 rounded-lg shadow-md">
+<div class="w-full bg-white p-8 rounded-lg shadow-md overflow-y-auto">
   <h2 class="text-2xl font-semibold text-center text-gray-600"><strong>ListrikPay</strong></h2>
   <p class="text-center text-gray-500 mb-4">Buat akun baru untuk melanjutkan</p>
 
   <form wire:submit.prevent="register" class="space-y-5">
-    @csrf
-
     <!-- Name -->
     <div>
       <label for="name" class="block mb-1 text-sm text-gray-600">Nama Lengkap</label>
@@ -18,17 +16,71 @@
       @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
 
-    <!-- Email -->
+    <!-- Username -->
     <div>
-      <label for="email" class="block mb-1 text-sm text-gray-600">Email</label>
+      <label for="username" class="block mb-1 text-sm text-gray-600">Username</label>
       <input
-        type="email"
-        id="email"
-        wire:model.defer="email"
+        type="text"
+        id="username"
+        wire:model.defer="username"
         required
         class="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring focus:border-blue-300"
       />
-      @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+      @error('username') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+    </div>
+
+    <!-- Nomor Telepon -->
+    <div>
+      <label for="phone_number" class="block mb-1 text-sm text-gray-600">Nomor Telepon</label>
+      <input
+        type="text"
+        id="phone_number"
+        wire:model.defer="phone_number"
+        class="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring focus:border-blue-300"
+      />
+      @error('phone_number') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+    </div>
+
+    <!-- Alamat -->
+    <div>
+      <label for="address" class="block mb-1 text-sm text-gray-600">Alamat</label>
+      <textarea
+        id="address"
+        wire:model.defer="address"
+        required
+        class="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring focus:border-blue-300"
+      ></textarea>
+      @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+    </div>
+
+    <!-- Tarif -->
+    <div>
+      <label for="tarif" class="block mb-1 text-sm text-gray-600">Tarif Listrik (Daya)</label>
+      <select
+        id="tarif"
+        wire:model.defer="tarif_id"
+        required
+        class="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring focus:border-blue-300"
+      >
+        <option value="">Pilih Daya</option>
+        @foreach($tarifs as $tarif)
+          <option value="{{ $tarif->id }}">{{ $tarif->power }} VA</option>
+        @endforeach
+      </select>
+      @error('tarif_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+    </div>
+
+    <!-- Nomor Meter -->
+    <div>
+      <label for="meter_number" class="block mb-1 text-sm text-gray-600">Nomor Meter</label>
+      <input
+        type="text"
+        id="meter_number"
+        wire:model.defer="meter_number"
+        required
+        class="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring focus:border-blue-300"
+      />
+      @error('meter_number') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
 
     <!-- Password -->
@@ -54,24 +106,8 @@
         required
         class="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring focus:border-blue-300"
       />
+      @error('password_confirmation') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
-
-    <!-- Role (opsional, kalau user bisa pilih role sendiri) -->
-    {{-- 
-    <div>
-      <label for="role" class="block mb-1 text-sm text-gray-600">Role</label>
-      <select
-        id="role"
-        wire:model.defer="role"
-        class="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring focus:border-blue-300"
-      >
-        <option value="">Pilih Role</option>
-        <option value="1">Admin</option>
-        <option value="2">Pengguna</option>
-      </select>
-      @error('role') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-    </div>
-    --}}
 
     <!-- Submit -->
     <div>

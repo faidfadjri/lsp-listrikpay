@@ -21,7 +21,7 @@ class LoginForm extends Component
         if (Auth::guard()->attempt($credentials)) {
             session()->regenerate();
             $this->dispatch('notify', type: 'success', message: 'Login berhasil!');
-            return redirect()->intended('/');
+            return;
         }
 
         $this->dispatch('notify', type: 'error', message: 'Username atau password salah.');

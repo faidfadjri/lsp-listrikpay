@@ -19,17 +19,7 @@ class RegisterForm extends Component
     public function register()
     {
         try {
-            $validated = Validator::make([
-                'username'              => $this->username,
-                'email'                 => $this->email,
-                'password'              => $this->password,
-                'password_confirmation' => $this->password_confirmation,
-                'name'                  => $this->name,
-                'phone_number'          => $this->phone_number,
-                'address'               => $this->address,
-                'tarif_id'              => $this->tarif_id,
-                'meter_number'          => $this->meter_number,
-            ], [
+            $validated = $this->validate([
                 'username'              => 'required|string|unique:users,username',
                 'email'                 => 'required|email|unique:users,email',
                 'password'              => 'required|min:6|confirmed',
@@ -38,22 +28,17 @@ class RegisterForm extends Component
                 'address'               => 'required|string',
                 'tarif_id'              => 'required|exists:tarifs,tarif_id',
                 'meter_number'          => 'required|string',
-            ])->validate();
+            ]);
 
             $getCustomerRole = UserRole::where('name', Roles::CUSTOMER)->first();
-            if (!$getCustomerRole) {
-                $this->dispatch('notify', type: 'error', message: 'Role customer tidak ditemukan.');
-                return;
-            }
-
-            if (!Roles::isValid($getCustomerRole->name)) {
+            if (!$getCustomerRole || !Roles::isValid($getCustomerRole->name)) {
                 $this->dispatch('notify', type: 'error', message: 'Role customer tidak valid.');
                 return;
             }
 
             $user = User::create([
                 'name'      => $validated['name'],
-                'username'   => $validated['username'],
+                'username'  => $validated['username'],
                 'email'     => $validated['email'],
                 'password'  => Hash::make($validated['password']),
                 'user_role' => $getCustomerRole->user_role_id,
@@ -72,7 +57,8 @@ class RegisterForm extends Component
             $this->dispatch('notify', type: 'success', message: 'Pendaftaran berhasil! Silakan login.');
         } catch (\Throwable $e) {
             Log::error("message: {$e->getMessage()}, file: {$e->getFile()}, line: {$e->getLine()}");
-            $this->dispatch('notify', type: 'error', message: 'Terjadi kesalahan saat mendaftar.');
+            $firstError = $e->validator->errors()->first();
+            $this->dispatch('notify', type: 'error', message: $firstError);
         }
     }
 

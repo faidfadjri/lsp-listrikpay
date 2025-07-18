@@ -3,15 +3,23 @@
   <p class="text-center text-gray-500 mb-4">Silakan login untuk melanjutkan</p>
 
   <div x-data="{ show: false, message: '', type: 'success' }"
-      x-on:notify.window="show = true; message = $event.detail.message; type = $event.detail.type;
-                          setTimeout(() => show = false, 4000);"
-      x-show="show"
-      x-transition
-      class="fixed top-4 right-4 max-w-xs w-full border-l-4 p-4 rounded shadow z-50"
-      :class="type === 'success' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700'"
-      style="display: none;"
+    x-on:notify.window="
+      show = true;
+      message = $event.detail.message;
+      type = $event.detail.type;
+      if(type === 'success') {
+        setTimeout(() => { window.location.href = '/'; }, 1000);
+      } else {
+        setTimeout(() => show = false, 4000);
+      }
+    "
+    x-show="show"
+    x-transition
+    class="fixed top-4 right-4 max-w-xs w-full border-l-4 p-4 rounded shadow z-50"
+    :class="type === 'success' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700'"
+    style="display: none;"
   >
-      <p x-text="message"></p>
+    <p x-text="message"></p>
   </div>
 
   <form wire:submit.prevent="login" class="space-y-5">
